@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   Slider,
 } from "react-native";
-import { Ionicons, AntDesign, Entypo, Feather } from "@expo/vector-icons";
+import { Ionicons, AntDesign, Feather } from "@expo/vector-icons";
 
 const Player = ({ children, size, style }) => {
   return (
