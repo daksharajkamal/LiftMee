@@ -9,9 +9,25 @@ import {
 } from "react-native";
 import Svg, { Image, Circle, ClipPath } from "react-native-svg";
 import Animated, { Easing } from "react-native-reanimated";
-import { TapGestureHandler, State } from "react-native-gesture-handler";
+import {
+  TapGestureHandler,
+  State,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
 import * as Google from "expo-google-app-auth";
 import * as firebase from "firebase";
+
+//Timer Warning
+import { YellowBox } from "react-native";
+import _ from "lodash";
+
+YellowBox.ignoreWarnings(["Setting a timer"]);
+const _console = _.clone(console);
+console.warn = (message) => {
+  if (message.indexOf("Setting a timer") <= -1) {
+    _console.warn(message);
+  }
+};
 
 const { width, height } = Dimensions.get("window");
 /**
@@ -302,11 +318,18 @@ class LiftMee extends Component {
               transform: [{ translateY: this.buttonY }],
             }}
           >
-            <Button
+            <TouchableOpacity onPress={() => this.signInWithFacebook()}>
+              <Text
+                style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
+              >
+                SIGN IN WITH FACEBOOK
+              </Text>
+            </TouchableOpacity>
+            {/* <Button
               title="SIGN IN WITH FACEBOOK"
               onPress={() => this.signInWithFacebook()}
               color="#2E71DC"
-            ></Button>
+            ></Button> */}
           </Animated.View>
           <Animated.View
             style={{
@@ -316,10 +339,16 @@ class LiftMee extends Component {
               transform: [{ translateY: this.buttonY }],
             }}
           >
-            <Button
+            <TouchableOpacity onPress={() => this.signInWithGoogleAsync()}>
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                Sign In With Google
+              </Text>
+            </TouchableOpacity>
+            {/* <Button
+              style={{}}
               onPress={() => this.signInWithGoogleAsync()}
               title="SIGN IN WITH GOOGLE"
-            />
+            /> */}
           </Animated.View>
           <Animated.View
             style={{
@@ -370,10 +399,17 @@ class LiftMee extends Component {
                 elevation: 15,
               }}
             >
-              <Button
+              <TouchableOpacity onPress={() => this.signInWithEmailPasword()}>
+                <Text
+                  style={{ fontSize: 20, fontWeight: "bold", color: "black" }}
+                >
+                  Sign In
+                </Text>
+              </TouchableOpacity>
+              {/* <Button
                 title="Sign in"
                 onPress={() => this.signInWithEmailPasword()}
-              ></Button>
+              ></Button> */}
               {/* <Text style={{ fontSize: 20, fontWeight: "bold" }}>SignIn</Text> */}
             </Animated.View>
           </Animated.View>

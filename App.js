@@ -1,10 +1,13 @@
 import React from "react";
-import { Asset } from "expo-asset";
-import { AppLoading } from "expo";
+// import { Asset } from "expo-asset";
+// import { AppLoading } from "expo";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "react-navigation-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import DashboardScreen from "./screens/DashboardScreen";
 import LoadingScreen from "./screens/LoadingScreen";
-import LiftMee from "./App/Index";
+import LiftMee from "./screens/LoginScreen";
 import * as firebase from "firebase";
 
 const firebaseConfig = {
@@ -21,46 +24,25 @@ const firebaseConfig = {
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-const AppSwitchNavigator = createSwitchNavigator({
-  LoadingScreen: LoadingScreen,
+
+const AppTabNavigator = createBottomTabNavigator();
+function MyTabs() {
+  return (
+    <AppTabNavigator.Navigator>
+      <AppTabNavigator.Screen name="Home" component={DashboardScreen} />
+      <AppTabNavigator.Screen name="Home" component={DashboardScreen} />
+    </AppTabNavigator.Navigator>
+  );
+}
+
+const AuthStack = createStackNavigator({
   LoginScreen: LiftMee,
-  DashboardScreen: DashboardScreen,
 });
 
-const AppNavigator = createAppContainer(AppSwitchNavigator);
-
-function cacheImages(images) {
-  return images.map((image) => {
-    if (typeof image === "string") {
-      return Image.prefetch(image);
-    } else {
-      return Asset.fromModule(image).downloadAsync();
-    }
-  });
-}
-export default class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      isReady: false,
-    };
-  }
-  async _loadAssetsAsync() {
-    const imageAssets = cacheImages([require("./assets/background.png")]);
-
-    await Promise.all([...imageAssets]);
-  }
-  render() {
-    if (!this.state.isReady) {
-      return (
-        <AppLoading
-          startAsync={this._loadAssetsAsync}
-          onFinish={() => this.setState({ isReady: true })}
-          onError={console.warn}
-        />
-      );
-    }
-
-    return <AppNavigator />;
-  }
+export default function App() {
+  return (
+    <NavigationContainer>
+      <AppTabNavigator />
+    </NavigationContainer>
+  );
 }
